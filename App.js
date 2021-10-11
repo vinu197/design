@@ -1,112 +1,48 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { Dimensions  } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import CustomBottomNavigation from './screens/StaticComponent/CustomBottomNavigation';
+import CustomDrawer from './screens/StaticComponent/CustomDrawer';
+import AboutUsScreen from './screens/AboutUsComponent/AboutUsScreen';
+import ContactUsScreen from './screens/ContactComponent/ContactUsScreen';
+import SearchProfileScreen from './screens/SearchComponent/SearchProfileScreen';
+import EventDetailsScreen from './screens/EventsComponent/EventDetailsScreen';
+import SingleMemberScreen from './screens/MyFamilyComponent/SingleMemberScreen';
+import  LatestNewsScreen from './screens/LatestNewsComponent/LatestNewsScreen';
+import EventListScreen from './screens/EventsComponent/EventListScreen';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const HomeStack = createStackNavigator()
+const Drawer = createDrawerNavigator()
+const { width } = Dimensions.get('screen')
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+function Stack() {
+    return(
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  <HomeStack.Navigator headerMode='none'>
+      <HomeStack.Screen name="Home" component={CustomBottomNavigation} />
+      <HomeStack.Screen name="SearchedProfile" component={SearchProfileScreen} />
+      <HomeStack.Screen name="EventDetails" component={EventDetailsScreen} />
+      <HomeStack.Screen name="SingleMemberDetails" component={SingleMemberScreen} />
+      <HomeStack.Screen name="EventList" component={EventListScreen} />
+      <HomeStack.Screen name="ContactUs" component={ContactUsScreen}></HomeStack.Screen>
+    </HomeStack.Navigator>
+  )
+}
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+function App() {
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
+    return (
+      <NavigationContainer>
+        <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />} drawerPosition='right'>
+          <Drawer.Screen name="HomeDrawer" component={Stack}></Drawer.Screen>
+          <Drawer.Screen name="AboutUs" component={AboutUsScreen}></Drawer.Screen>
+          <Drawer.Screen name="ContactUs" component={ContactUsScreen}></Drawer.Screen>
+        </Drawer.Navigator>
+      </NavigationContainer>
+    );
+  }
+  
 export default App;
+  
